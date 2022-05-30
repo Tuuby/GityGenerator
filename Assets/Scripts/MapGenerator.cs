@@ -26,11 +26,25 @@ public class MapGenerator : MonoBehaviour
 
     public bool autoUpdate;
 
+    public enum TerrainFilter { None, Coast }
+    public TerrainFilter filter;
+
     public TerrainType[] regions;
 
     public void GenerateMap()
     {
         float[,] noiseMap = Noise.GenerateNoiseMap(mapChunkSize, mapChunkSize, seed, noiseScale, octaves, persistance, lacunarity, offset);
+
+        if (filter == TerrainFilter.Coast)
+        {
+            for (int y = 0; y < mapChunkSize; y++)
+            {
+                for (int x = 0; x < mapChunkSize; x++)
+                {
+                    noiseMap[x, y] = noiseMap[y, x];
+                }
+            }
+        }
 
         Color[] colorMap = new Color[mapChunkSize * mapChunkSize];
         for (int y = 0; y < mapChunkSize; y++)
