@@ -41,7 +41,12 @@ public class MapGenerator : MonoBehaviour
             {
                 for (int x = 0; x < mapChunkSize; x++)
                 {
-                    noiseMap[x, y] = noiseMap[y, x];
+                    float xManipulation = (Mathf.Log(((float)x / mapChunkSize) + 1) + 0.2f) * noiseMap[x, y];
+                    noiseMap[x, y] = Mathf.Min(1, xManipulation);
+
+                    float center = mapChunkSize / 2;
+                    float yManipulation = ((Mathf.Abs(center - y) / mapChunkSize) + 0.5f) * noiseMap[x, y];
+                    noiseMap[x, y] = Mathf.Min(1, yManipulation);
                 }
             }
         }
